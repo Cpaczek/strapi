@@ -126,7 +126,7 @@ module.exports = (db) => {
     if (
       db.dialect.client === 'cockroachdb' &&
       column.type === 'increments' &&
-      oldDefaultTo === 'unique_rowid()'
+      (oldDefaultTo === 'unique_rowid()' || oldDefaultTo.startsWith('nextval('))
     ) {
       return true;
     }

@@ -26,6 +26,10 @@ class CockroachDialect extends Dialect {
       'text',
       parseFloat
     );
+    this.db.connection.client.pool.on('acquireSuccess', async (eventId, resource) => {
+      // resource.query('SET serial_normalization = "sql_sequence";');
+      resource.query('SET default_int_size = 4;');
+    });
   }
 
   usesForeignKeys() {
@@ -36,9 +40,6 @@ class CockroachDialect extends Dialect {
     switch (type) {
       case 'timestamp': {
         return 'datetime';
-      }
-      case 'integer': {
-        return 'bigInteger';
       }
       default: {
         return type;
